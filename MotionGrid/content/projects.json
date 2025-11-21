@@ -1,0 +1,51 @@
+[
+  {
+    "slug": "project-1",
+    "title": "E-Commerce Platform",
+    "category": "Web Development",
+    "description": "A modern e-commerce platform with advanced features",
+    "fullDescription": "We developed a comprehensive e-commerce platform that includes user authentication, product management, shopping cart, payment integration, and admin dashboard. The platform is fully responsive and optimized for performance.",
+    "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "Stripe", "MongoDB"]
+  },
+  {
+    "slug": "project-2",
+    "title": "Mobile App Design",
+    "category": "Design",
+    "description": "Beautiful and intuitive mobile app interface design",
+    "fullDescription": "Created a stunning mobile app design that focuses on user experience and modern aesthetics. The design includes comprehensive UI components, animations, and user flows.",
+    "technologies": ["Figma", "Adobe XD", "Prototyping"]
+  },
+  {
+    "slug": "project-3",
+    "title": "Cloud Migration",
+    "category": "Consulting",
+    "description": "Seamless migration to cloud infrastructure",
+    "fullDescription": "Helped a large enterprise migrate their entire infrastructure to the cloud, reducing costs by 40% and improving scalability. The migration was completed with zero downtime.",
+    "technologies": ["AWS", "Docker", "Kubernetes", "Terraform"]
+  },
+  {
+    "slug": "project-4",
+    "title": "Marketing Campaign",
+    "category": "Marketing",
+    "description": "Successful digital marketing campaign with 300% ROI",
+    "fullDescription": "Developed and executed a comprehensive digital marketing campaign that resulted in a 300% return on investment. The campaign included SEO, social media marketing, and content creation.",
+    "technologies": ["SEO", "Google Ads", "Social Media", "Analytics"]
+  },
+  {
+    "slug": "project-5",
+    "title": "Data Analytics Dashboard",
+    "category": "Analytics",
+    "description": "Real-time analytics dashboard for business insights",
+    "fullDescription": "Built a powerful analytics dashboard that provides real-time insights into business performance. The dashboard includes customizable reports, data visualization, and automated alerts.",
+    "technologies": ["React", "D3.js", "Python", "PostgreSQL"]
+  },
+  {
+    "slug": "project-6",
+    "title": "Brand Identity",
+    "category": "Design",
+    "description": "Complete brand identity redesign",
+    "fullDescription": "Redesigned the entire brand identity including logo, color palette, typography, and brand guidelines. The new identity reflects the company's modern vision and values.",
+    "technologies": ["Branding", "Logo Design", "Typography"]
+  }
+]
+

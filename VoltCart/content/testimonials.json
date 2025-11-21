@@ -1,0 +1,27 @@
+[
+  {
+    "name": "John Smith",
+    "role": "CEO",
+    "company": "TechCorp",
+    "content": "VoltCart transformed our business operations. Their innovative approach and attention to detail exceeded our expectations. Highly recommended!"
+  },
+  {
+    "name": "Sarah Johnson",
+    "role": "Marketing Director",
+    "company": "Digital Solutions Inc",
+    "content": "Working with VoltCart was a game-changer. They delivered results that surpassed our goals and provided exceptional support throughout the project."
+  },
+  {
+    "name": "Michael Chen",
+    "role": "Founder",
+    "company": "StartupXYZ",
+    "content": "VoltCart's expertise and professionalism are unmatched. They helped us launch our product successfully and continue to provide valuable insights."
+  },
+  {
+    "name": "Emily Davis",
+    "role": "CTO",
+    "company": "InnovateNow",
+    "content": "The team at VoltCart is incredibly talented and responsive. They understood our vision and brought it to life with exceptional quality and precision."
+  }
+]
+

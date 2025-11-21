@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DaisyUI theme customization - Light theme only */
+:root {
+  --color-neutral: #000000;
+  --color-neutral-content: #ffffff;
+}
+
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--ring-offset, var(--background)));
+}
+
+/* 2026 Design Trends - Enhanced animations and effects */
+@layer utilities {
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .glow-effect:hover {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
+}
+
+/* Cursor trail styles - Trend #4: WebGL for Everyone */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(var(--tx), var(--ty)) scale(1.2);
+    opacity: 0.5;
+  }
+}
+
+/* Kinetic typography - Trend #6: Typography That Breathes and Moves */
+@supports (font-variation-settings: normal) {
+  .variable-font {
+    font-variation-settings: 'wght' var(--font-weight, 400);
+  }
+}
+
+/* Micro-interactions - Trend #5: Micro-Animations Are Growing Up */
+button, a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active, a:active {
+  transform: scale(0.95);
+}
+
+/* Bold colors - Trend #9: Goodbye Beige, Hello Bold */
+.gradient-brilliant {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+}
+
+/* Ethical & Accessible Design - 2026 Trend */
+.high-contrast {
+  filter: contrast(1.2);
+}
+
+.high-contrast * {
+  border-color: currentColor !important;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile-first optimizations */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+
+/* Focus indicators for accessibility */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Enhanced text visibility */
+@layer utilities {
+  .text-visible {
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Better contrast for gradient text */
+  .gradient-text-visible {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* Body styling */
+body {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* Strong text visibility for headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #111827; /* gray-900 */
+  font-weight: 700;
+}
+
+/* Paragraph text - Force visibility */
+p {
+  color: #000000 !important; /* Pure black */
+  font-weight: 600 !important;
+}
+
+/* Override for paragraphs in banner/hero sections with background images - must be white */
+section.relative.overflow-hidden p.text-white,
+section[class*="relative"][class*="overflow-hidden"] p.text-white,
+section.pt-24 p.text-white,
+section.relative p.text-white {
+  color: #ffffff !important;
+}
+
+
+
+/* Ensure all text in light mode has strong contrast */
+.light-text-strong {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+
