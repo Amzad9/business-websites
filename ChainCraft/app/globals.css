@@ -63,9 +63,75 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Mobile-First Responsive Design & UX Enhancements */
+@media (max-width: 640px) {
+  /* Thumb-friendly navigation - minimum touch targets */
+  a, button, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Improved text readability on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices for better UX */
+  * {
+    -webkit-tap-highlight-color: rgba(251, 191, 36, 0.3);
+  }
+  
+  /* Larger touch targets */
+  button, a, input {
+    min-height: 44px;
+  }
+}
+
+/* Smooth transitions for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 *:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--ring-offset, var(--background)));
+}
+
+/* Touch manipulation utility */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Horizontal Scroll Utilities for Mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+.touch-pan-x {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 
@@ -124,4 +190,462 @@ section.relative p.text-white {
 /* Smooth transitions for adaptive changes */
 .adaptive-ui * {
   transition: filter 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+
+/* 2026 UX Design Trends - Enhanced Accessibility */
+.high-contrast {
+  filter: contrast(1.3) brightness(1.1);
+}
+
+.high-contrast * {
+  border-color: currentColor !important;
+}
+
+.high-contrast button,
+.high-contrast a {
+  border: 2px solid currentColor !important;
+}
+
+/* Reduced Motion - Respect user preferences */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Larger Touch Targets - 2026 Accessibility Standard */
+a, button {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enhanced Focus Indicators */
+*:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Micro-Interactions - Ripple Effect */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  animation: ripple 0.6s ease-out;
+}
+
+/* Button Submit Feedback */
+button.submitted {
+  background-color: #10b981 !important;
+  transform: scale(0.98);
+}
+
+button.submitted::after {
+  content: ' ✓';
+  font-weight: bold;
+}
+
+/* Subtle Hover Feedback */
+button:not(:disabled):hover,
+a:not([aria-disabled="true"]):hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+button:not(:disabled):active,
+a:not([aria-disabled="true"]):active {
+  transform: translateY(0);
+}
+
+/* Success Feedback Animation */
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.success-feedback {
+  animation: successPulse 0.5s ease;
+}
+
+/* Keyboard Navigation - Visible Indicators */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Sustainable UX - Lightweight Loading States */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Improved Color Contrast - WCAG AAA Standards */
+.text-low-contrast {
+  color: #6b7280; /* gray-500 - for secondary text */
+}
+
+/* Better Visual Feedback for Interactive Elements */
+[role="button"]:hover,
+[tabindex]:hover {
+  cursor: pointer;
+}
+
+[role="button"]:focus,
+[tabindex]:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Screen Reader Optimizations */
+[aria-label]::before {
+  content: attr(aria-label);
+}
+
+/* Skip to Main Content Link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-to-main:focus {
+  top: 0;
+}
+
+/* Voice Command Visual Feedback */
+.voice-active {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  animation: voicePulse 1s ease-in-out infinite;
+}
+
+@keyframes voicePulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+  }
+}
+
+/* Accessibility Panel Slide Up Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar for Accessibility Panel */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Sustainable UX - Lightweight Mode */
+.lightweight-mode img {
+  loading: lazy;
+}
+
+.lightweight-mode video,
+.lightweight-mode iframe {
+  loading: lazy;
+}
+
+@media (prefers-reduced-data: reduce) {
+  .lightweight-mode {
+    /* Disable background images */
+    background-image: none !important;
+  }
+  
+  /* Use system fonts */
+  * {
+    font-family: system-ui, -apple-system, sans-serif !important;
+  }
+}
+
+/* Force Accessibility Button to always stay fixed */
+.accessibility-button-fixed {
+  position: fixed !important;
+  bottom: 80px !important;
+  right: 16px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* Force WhatsApp Button to always stay fixed */
+.whatsapp-button-fixed {
+  position: fixed !important;
+  bottom: 144px !important;
+  right: 16px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* Force Chat Button to always stay fixed */
+.chat-button-fixed {
+  position: fixed !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* Force Voice Button to always stay fixed */
+.voice-button-fixed {
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 16px !important;
+  top: auto !important;
+  right: auto !important;
+  z-index: 9999 !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* Custom pulse animations with different durations */
+@keyframes pulse-voice {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes pulse-whatsapp {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes pulse-chat {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes pulse-accessibility {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+.pulse-voice {
+  animation: pulse-voice 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-whatsapp {
+  animation: pulse-whatsapp 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-chat {
+  animation: pulse-chat 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-accessibility {
+  animation: pulse-accessibility 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Animation delay utilities */
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+/* Custom scrollbar improvements */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.8);
+}
+
+/* Hero blob animations */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Grid pattern */
+.bg-grid-white\/10 {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+}
+
+/* Organic Shapes (Trend #15) */
+.organic-shape {
+  fill: url(#gradient);
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Text-Only Hero Styles */
+.text-hero {
+  font-variation-settings: 'wght' 900;
+  letter-spacing: -0.02em;
+}
+
+/* Big Blocks with Vivid Contrast */
+.big-block {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.big-block:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Micro-interactions */
+.micro-bounce {
+  transition: transform 0.2s ease;
+}
+
+.micro-bounce:active {
+  transform: scale(0.95);
 }

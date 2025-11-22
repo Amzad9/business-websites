@@ -26,6 +26,12 @@ interface AdaptiveUIContextType {
   isStressMode: boolean
   updateBehavior: (type: keyof UserBehavior, value: any) => void
   trackInteraction: (feature: string) => void
+  getPersonalizationInfo: () => {
+    dataCollected: Record<string, string>
+    stored: string
+    shared: string
+    control: string
+  }
 }
 
 const AdaptiveUIContext = createContext<AdaptiveUIContextType | undefined>(undefined)
@@ -47,7 +53,7 @@ export function AdaptiveUIProvider({ children }: { children: React.ReactNode }) 
   const [behavior, setBehavior] = useState<UserBehavior>(defaultBehavior)
   const [colorMode, setColorMode] = useState<'bright' | 'normal' | 'monochrome'>('normal')
   const [isStressMode, setIsStressMode] = useState(false)
-  const typingTimerRef = useRef<NodeJS.Timeout>()
+  const typingTimerRef = useRef<NodeJS.Timeout | null>(null)
   const lastTypingTimeRef = useRef<number>(0)
   const keystrokeCountRef = useRef<number>(0)
 
@@ -233,6 +239,20 @@ export function AdaptiveUIProvider({ children }: { children: React.ReactNode }) 
     fast: 0.6,
   }[behavior.preferredAnimationSpeed]
 
+  // AI Personalization Transparency - 2026 Trend
+  const getPersonalizationInfo = useCallback(() => {
+    return {
+      dataCollected: {
+        navigation: 'To improve page ordering',
+        features: 'To personalize content',
+        speed: 'To adjust animations',
+      },
+      stored: 'locally in your browser',
+      shared: 'never',
+      control: 'full control via settings',
+    }
+  }, [])
+
   const value: AdaptiveUIContextType = {
     timeOfDay,
     colorMode,
@@ -243,6 +263,7 @@ export function AdaptiveUIProvider({ children }: { children: React.ReactNode }) 
     isStressMode,
     updateBehavior,
     trackInteraction,
+    getPersonalizationInfo,
   }
 
   return (
@@ -270,6 +291,12 @@ const defaultAdaptiveUIContext: AdaptiveUIContextType = {
   isStressMode: false,
   updateBehavior: () => {},
   trackInteraction: () => {},
+  getPersonalizationInfo: () => ({
+    dataCollected: {},
+    stored: 'locally',
+    shared: 'never',
+    control: 'full control',
+  }),
 }
 
 export function useAdaptiveUI() {

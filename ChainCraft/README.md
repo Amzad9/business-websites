@@ -12,7 +12,7 @@ npm install
 2. Create a `.env.local` file:
 ```
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
-SITE_URL=https://chaincraft.com
+SITE_URL=https://chaincraft.weblibron.com
 ```
 
 3. Run the development server:

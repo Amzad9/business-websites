@@ -46,7 +46,7 @@ export default function AccessibilityBar() {
                 value={fontSize}
                 onChange={(e) => setFontSize(Number(e.target.value))}
                 className="w-full"
-                aria-label="Font size adjustment"
+                aria-label=""
               />
             </div>
 

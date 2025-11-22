@@ -12,7 +12,20 @@ interface PageProps {
   }
 }
 
-function getBlogPost(slug: string) {
+interface BlogFrontmatter {
+  title?: string
+  excerpt?: string
+  date?: string | Date
+  [key: string]: any
+}
+
+interface BlogPost {
+  slug: string
+  frontmatter: BlogFrontmatter
+  content: string
+}
+
+function getBlogPost(slug: string): BlogPost | null {
   const blogDirectory = path.join(process.cwd(), 'content/blog')
   const filePath = path.join(blogDirectory, `${slug}.md`)
   
@@ -30,12 +43,14 @@ function getBlogPost(slug: string) {
     ? data.date.toISOString().split('T')[0] 
     : String(data.date || '')
 
+  const frontmatter: BlogFrontmatter = {
+    ...data,
+    date: dateValue,
+  }
+
   return {
     slug,
-    frontmatter: {
-      ...data,
-      date: dateValue,
-    },
+    frontmatter,
     content: contentHtml,
   }
 }

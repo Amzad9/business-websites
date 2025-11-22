@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAdaptiveUI } from './AdaptiveUIProvider'
+import Logo from './Logo'
 
 // Icons replaced with SVG components
 const MenuIcon = () => (
@@ -25,8 +26,6 @@ const navLinks = [
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/blog', label: 'Blog' },
   { href: '/testimonial', label: 'Testimonial' },
-  { href: '/workflow', label: 'Workflow' },
-  { href: '/how-to-work', label: 'How to Work' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -36,9 +35,8 @@ export default function Header() {
   const pathname = usePathname()
   const { trackInteraction } = useAdaptiveUI()
 
-  // Home page has white background, inner pages have banner images with dark gradients
+  // Home page has white background, inner pages have light colored banners
   const isHomePage = pathname === '/'
-  const hasDarkBanner = !isHomePage // All inner pages have dark banner images
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,54 +65,43 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/80 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+          : isHomePage
+            ? 'bg-transparent'
+            : 'bg-white/90 backdrop-blur-sm shadow-sm'
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent"
-            >
-              ChainCraft
-            </motion.div>
-          </Link>
+          <Logo variant={scrolled || isHomePage ? 'default' : 'default'} />
 
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden xl:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => trackInteraction(`nav-${link.href}`)}
-                className={`text-sm font-medium transition-colors relative group ${
-                  scrolled 
-                    ? 'text-gray-700 hover:text-primary-600' 
-                    : hasDarkBanner
-                      ? 'text-white hover:text-primary-200'
-                      : 'text-gray-700 hover:text-primary-600'
+                className={`text-base font-semibold transition-colors relative group ${
+                  scrolled || !isHomePage
+                    ? 'text-gray-700 hover:text-amber-600' 
+                    : 'text-gray-700 hover:text-amber-600'
                 }`}
               >
                 {link.label}
                 <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                  scrolled 
-                    ? 'bg-primary-600' 
-                    : hasDarkBanner
-                      ? 'bg-white'
-                      : 'bg-primary-600'
+                  scrolled || !isHomePage
+                    ? 'bg-amber-600' 
+                    : 'bg-amber-600'
                 }`} />
               </Link>
             ))}
           </div>
 
-          <div className="lg:hidden flex items-center space-x-4">
+          <div className="xl:hidden flex items-center space-x-4">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-lg bg-gray-100 relative z-50"
-              aria-label="Toggle menu"
-              aria-expanded={isOpen}
+              className="p-3 rounded-lg bg-gray-100 relative z-50 touch-manipulation"
+              style={{ minWidth: '44px', minHeight: '44px' }}
             >
               <motion.div
                 initial={false}
@@ -137,12 +124,13 @@ export default function Header() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setIsOpen(false)}
-            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            className="xl:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+            style={{ top: 0, left: 0, right: 0, bottom: 0 }}
           />
         )}
       </AnimatePresence>
 
-      {/* Sidebar Menu from Right */}
+      {/* Sidebar Menu from Right - Full Height for Mobile & Tablet */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -155,25 +143,26 @@ export default function Header() {
               stiffness: 300,
               duration: 0.4 
             }}
-            className="lg:hidden fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl z-50 overflow-y-auto"
+            className="xl:hidden fixed top-0 right-0 w-full sm:w-96 max-w-[90vw] bg-white shadow-2xl z-[9999] overflow-y-auto overscroll-contain flex flex-col"
+            style={{ 
+              height: '100dvh', /* Dynamic viewport height for mobile */
+            }}
           >
-            {/* Header with close button */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-                Menu
-              </h3>
+            {/* Header with close button - Sticky Top */}
+            <div className="sticky top-0 z-10 flex items-center justify-between p-4 sm:p-6 bg-white border-b border-gray-200 shadow-sm">
+              <Logo showText={true} variant="default" />
               <motion.button
                 whileTap={{ scale: 0.95, rotate: 90 }}
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                aria-label="Close menu"
+                className="p-3 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation"
+                style={{ minWidth: '44px', minHeight: '44px' }}
               >
                 <XIcon />
               </motion.button>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="p-6 space-y-2">
+            {/* Navigation Links - Scrollable Content */}
+            <nav className="p-4 sm:p-6 space-y-2 flex-1 overflow-y-auto min-h-0">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
@@ -193,24 +182,25 @@ export default function Header() {
                       setIsOpen(false)
                       trackInteraction(`nav-${link.href}`)
                     }}
-                    className="group relative block py-4 px-4 rounded-xl text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-semibold transition-all duration-300 transform hover:translate-x-2"
+                    className="group relative block py-4 px-4 rounded-xl text-gray-700 hover:text-amber-600 hover:bg-amber-50 active:bg-amber-100 text-base font-semibold transition-all duration-300 transform hover:translate-x-2 touch-manipulation"
+                    style={{ minHeight: '56px' }}
                   >
                     <span className="relative z-10 flex items-center">
-                      <span className="w-2 h-2 rounded-full bg-primary-600 opacity-0 group-hover:opacity-100 mr-3 transition-opacity duration-300"></span>
+                      <span className="w-2 h-2 rounded-full bg-amber-600 opacity-0 group-hover:opacity-100 mr-3 transition-opacity duration-300"></span>
                       {link.label}
                     </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                   </Link>
                 </motion.div>
               ))}
             </nav>
 
-            {/* Contact Info Section */}
+            {/* Contact Info Section - Sticky Bottom */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: navLinks.length * 0.05 + 0.1 }}
-              className="p-6 border-t border-gray-200 mt-6"
+              className="sticky bottom-0 p-4 sm:p-6 bg-white border-t border-gray-200 mt-auto"
             >
               <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
                 Contact
@@ -218,16 +208,18 @@ export default function Header() {
               <div className="space-y-3">
                 <a
                   href="mailto:info@chaincraft.com"
-                  className="flex items-center gap-3 text-gray-700 hover:text-primary-600 transition-colors font-semibold"
+                  className="flex items-center gap-3 text-gray-700 hover:text-amber-600 active:text-amber-700 transition-colors font-semibold py-2 touch-manipulation"
+                  style={{ minHeight: '44px' }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  info@chaincraft.com
+                  <span className="break-all">info@chaincraft.com</span>
                 </a>
                 <a
                   href="tel:+911234567890"
-                  className="flex items-center gap-3 text-gray-700 hover:text-primary-600 transition-colors font-semibold"
+                  className="flex items-center gap-3 text-gray-700 hover:text-amber-600 active:text-amber-700 transition-colors font-semibold py-2 touch-manipulation"
+                  style={{ minHeight: '44px' }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
