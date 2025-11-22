@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { Palette, Code, Sparkles, TrendingUp, Megaphone, BarChart3 } from 'lucide-react'
 import { SmoothAnimate, StaggerContainer } from './SmoothAnimate'
 
 export default function HomeContent() {
@@ -199,33 +200,41 @@ export default function HomeContent() {
                 title: 'Web Design',
                 description: 'Stunning, user-centered designs that convert. We create digital experiences that captivate and engage your audience.',
                 bgGradient: 'from-amber-500 to-orange-600',
+                icon: Palette,
               },
               {
                 title: 'Development',
                 description: 'High-performance websites and applications built with cutting-edge technologies and best practices.',
                 bgGradient: 'from-orange-500 to-rose-600',
+                icon: Code,
               },
               {
                 title: 'UI/UX Design',
                 description: 'User-centered design that creates exceptional experiences and drives engagement through intuitive interfaces.',
                 bgGradient: 'from-rose-500 to-pink-600',
+                icon: Sparkles,
               },
               {
                 title: 'Strategic Consulting',
                 description: 'Expert guidance to grow your online presence and achieve your business objectives with data-driven insights.',
                 bgGradient: 'from-amber-600 to-yellow-600',
+                icon: TrendingUp,
               },
               {
                 title: 'Digital Marketing',
                 description: 'Data-driven marketing strategies that drive growth, engagement, and measurable ROI across all channels.',
                 bgGradient: 'from-orange-600 to-amber-600',
+                icon: Megaphone,
               },
               {
                 title: 'Analytics & Insights',
                 description: 'Advanced analytics and reporting to optimize performance and make informed business decisions.',
                 bgGradient: 'from-rose-600 to-pink-600',
+                icon: BarChart3,
               },
-            ].map((service, index) => (
+            ].map((service, index) => {
+              const IconComponent = service.icon
+              return (
               <motion.div
                 key={index}
                 whileHover={{ y: -16, scale: 1.02 }}
@@ -241,7 +250,21 @@ export default function HomeContent() {
                     transition={{ duration: 0.5 }}
                   />
                   
-                  <div className="relative h-full flex flex-col justify-end p-6 sm:p-8 lg:p-10 text-white">
+                  <div className="relative h-full flex flex-col justify-between p-6 sm:p-8 lg:p-10 text-white">
+                    {/* Icon at Top */}
+                    <motion.div
+                      className="mb-auto"
+                      initial={{ opacity: 0, y: -20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+                        <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-white" strokeWidth={2.5} />
+                      </div>
+                    </motion.div>
+                    
+                    {/* Content at Bottom */}
                     <div className="space-y-3 sm:space-y-4">
                       <motion.h3
                         className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.1]"
@@ -269,7 +292,8 @@ export default function HomeContent() {
                   </div>
                 </Link>
               </motion.div>
-            ))}
+              )
+            })}
           </StaggerContainer>
         </div>
       </section>
