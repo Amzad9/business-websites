@@ -93,7 +93,7 @@ export default function About() {
         </div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
+          <div className=" mx-auto">
             {/* Asymmetrical Layout */}
             <div className="grid md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-7 space-y-8">
