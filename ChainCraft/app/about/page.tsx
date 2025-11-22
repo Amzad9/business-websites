@@ -102,7 +102,7 @@ export default function About() {
                     <span className="block text-amber-900">About</span>
                     <span className="block text-orange-600">ChainCraft</span>
                     <span className="block text-rose-600 text-7xl md:text-8xl lg:text-9xl">Agency</span>
-                  </h1>
+            </h1>
                   
                   <p className="text-2xl md:text-3xl text-amber-900/80 font-medium max-w-2xl leading-relaxed">
                     We're a digital agency that transforms businesses through innovative design, strategic thinking, and cutting-edge technology.
@@ -143,7 +143,7 @@ export default function About() {
               </h2>
               <p className="text-2xl md:text-3xl text-amber-900/70 max-w-4xl mx-auto font-medium leading-relaxed">
                 To empower businesses with innovative digital solutions that drive growth, enhance user experiences, and create lasting impact in an ever-evolving digital landscape.
-              </p>
+            </p>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default function About() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-6xl md:text-7xl lg:text-8xl font-black text-amber-900 leading-tight mb-6">
-                Our Journey
+            Our Journey
               </h2>
               <p className="text-2xl text-amber-900/70 max-w-3xl mx-auto font-medium">
                 A decade of innovation, growth, and exceptional client partnerships
@@ -168,11 +168,11 @@ export default function About() {
                 
                 return (
                   <div
-                    key={index}
-                    onClick={() => {
-                      setActiveStory(index)
-                      trackInteraction(`story-${index}`)
-                    }}
+                  key={index}
+                  onClick={() => {
+                    setActiveStory(index)
+                    trackInteraction(`story-${index}`)
+                  }}
                     className={`group relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-500 ${
                       isActive
                         ? 'ring-4 ring-amber-600 shadow-2xl scale-[1.02]'
@@ -274,8 +274,8 @@ export default function About() {
                     {/* Avatar Circle */}
                     <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center text-5xl font-black mb-6 shadow-xl">
                       {member.name.charAt(0)}
-                    </div>
-                    
+                  </div>
+
                     {/* Content */}
                     <div className="text-center space-y-2">
                       <h3 className="text-2xl font-black text-white">
@@ -323,7 +323,7 @@ export default function About() {
               >
                 View Our Work
               </a>
-            </div>
+                </div>
           </div>
         </div>
       </section>

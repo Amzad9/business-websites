@@ -68,7 +68,7 @@ export default function Blog() {
     },
     {
       slug: 'digital-marketing-2025',
-      frontmatter: {
+        frontmatter: {
         title: 'Digital Marketing Strategies for 2025',
         date: '2024-12-15',
         excerpt: 'Explore the latest digital marketing strategies, tools, and tactics that will dominate 2025 and help you achieve exceptional ROI.',
@@ -125,7 +125,7 @@ export default function Blog() {
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-amber-200/30 to-orange-300/30 rounded-full blur-3xl animate-blob"></div>
           <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-rose-200/30 to-pink-300/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        </div>
+          </div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-5xl mx-auto space-y-8">
@@ -219,12 +219,12 @@ export default function Blog() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                           </div>
-                        </div>
-                      </article>
-                    </Link>
+                      </div>
+                    </article>
+                  </Link>
                   )
                 })}
-              </div>
+                </div>
             </>
           )}
         </div>
@@ -262,7 +262,7 @@ export default function Blog() {
               </Link>
             </div>
           </div>
-        </div>
+    </div>
       </section>
     </AdaptivePageWrapper>
   )

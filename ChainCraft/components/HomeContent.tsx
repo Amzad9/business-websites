@@ -147,7 +147,7 @@ export default function HomeContent() {
                       priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-rose-400/20"></div>
-                    <svg className="absolute bottom-0 left-0 w-full h-1/3" viewBox="0 0 400 200" preserveAspectRatio="none">
+                    <svg className="absolute bottom-0 left-0 w-full h-1/3" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true">
                       <path d="M0,200 Q100,100 200,150 T400,100 L400,200 Z" fill="rgba(251, 191, 36, 0.3)" className="organic-shape"/>
                     </svg>
                   </div>
@@ -377,7 +377,7 @@ export default function HomeContent() {
                         whileHover={{ opacity: 0.4 }}
                         transition={{ duration: 0.3 }}
                       />
-                      <svg className={`absolute ${index % 2 === 0 ? 'top-0 right-0' : 'bottom-0 left-0'} w-1/3 h-full opacity-50`} viewBox="0 0 200 600" preserveAspectRatio="none">
+                      <svg className={`absolute ${index % 2 === 0 ? 'top-0 right-0' : 'bottom-0 left-0'} w-1/3 h-full opacity-50`} viewBox="0 0 200 600" preserveAspectRatio="none" aria-hidden="true">
                         <path d="M0,0 Q50,300 100,600 T200,0" fill="rgba(251, 191, 36, 0.4)" className="organic-shape"/>
                       </svg>
                     </div>
@@ -492,7 +492,7 @@ export default function HomeContent() {
                       {/* Enhanced Gradient Overlay - Warm Colors & Vivid Contrast (Trend #1, #6, #21) */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} group-hover:opacity-75 transition-opacity duration-300`}></div>
                       {/* Organic Shape Overlay - Blending Photos with Graphical Elements */}
-                      <svg className="absolute top-0 right-0 w-1/2 h-full opacity-30 group-hover:opacity-50 transition-opacity duration-300" viewBox="0 0 400 600" preserveAspectRatio="none">
+                      <svg className="absolute top-0 right-0 w-1/2 h-full opacity-30 group-hover:opacity-50 transition-opacity duration-300" viewBox="0 0 400 600" preserveAspectRatio="none" aria-hidden="true">
                         <defs>
                           <linearGradient id={`gradient-organic-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stopColor="rgba(251, 191, 36, 0.4)" />

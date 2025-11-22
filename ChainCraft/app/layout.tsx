@@ -21,6 +21,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chaincraft.weblibron.com'),
   title: {
     default: 'ChainCraft Digital Agency - Transform Your Business with Innovative Design & Development',
     template: '%s | ChainCraft Digital Agency'

@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://chaincraft.com
+Host: https://chaincraft.weblibron.com
 
 # Sitemaps
-Sitemap: https://chaincraft.com/sitemap.xml
+Sitemap: https://chaincraft.weblibron.com/sitemap.xml
