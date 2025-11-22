@@ -18,66 +18,62 @@ export default function VoiceInterface() {
       setIsSupported(!!SpeechRecognition)
 
       if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition()
-        recognitionRef.current.continuous = true
-        recognitionRef.current.interimResults = false
-        recognitionRef.current.lang = 'en-US'
+        try {
+          recognitionRef.current = new SpeechRecognition()
+          recognitionRef.current.continuous = true
+          recognitionRef.current.interimResults = false
+          recognitionRef.current.lang = 'en-US'
 
-        recognitionRef.current.onresult = (event: any) => {
-          const command = event.results[event.results.length - 1][0].transcript.toLowerCase()
-          setTranscript(command)
-          handleVoiceCommand(command)
-        }
-
-        recognitionRef.current.onerror = (event: any) => {
-          console.error('Speech recognition error:', event.error)
-          setIsListening(false)
-          isListeningRef.current = false
-        }
-
-        recognitionRef.current.onend = () => {
-          // Auto-restart if it was listening
-          if (isListeningRef.current) {
-            try {
-              recognitionRef.current.start()
-            } catch (error) {
-              console.error('Failed to restart recognition:', error)
-              setIsListening(false)
-              isListeningRef.current = false
+          recognitionRef.current.onresult = (event: any) => {
+            if (event.results && event.results.length > 0) {
+              const command = event.results[event.results.length - 1][0].transcript.toLowerCase()
+              setTranscript(command)
+              handleVoiceCommand(command)
             }
           }
-        }
 
-        // Auto-start voice recognition
-        const startVoiceRecognition = async () => {
-          try {
-            // Request microphone permission
-            await navigator.mediaDevices.getUserMedia({ audio: true })
-            // Small delay to ensure everything is ready
-            setTimeout(() => {
-              if (recognitionRef.current) {
-                recognitionRef.current.start()
-                setIsListening(true)
-                isListeningRef.current = true
-              }
-            }, 1000)
-          } catch (error) {
-            console.error('Microphone permission denied or not available:', error)
+          recognitionRef.current.onerror = (event: any) => {
+            console.error('Speech recognition error:', event.error)
+            
+            // Handle specific error types
+            if (event.error === 'no-speech') {
+              // No speech detected - continue listening
+              return
+            } else if (event.error === 'audio-capture') {
+              // No microphone found
+              alert('Microphone not found. Please check your microphone settings.')
+            } else if (event.error === 'not-allowed') {
+              // Permission denied
+              alert('Microphone permission denied. Please allow microphone access in your browser settings.')
+            } else if (event.error === 'network') {
+              // Network error
+              alert('Network error. Please check your internet connection.')
+            } else if (event.error === 'aborted') {
+              // Recognition aborted - this is normal when stopping
+              return
+            }
+            
             setIsListening(false)
             isListeningRef.current = false
           }
-        }
 
-        // Start after a brief delay
-        const timer = setTimeout(() => {
-          startVoiceRecognition()
-        }, 500)
-
-        return () => {
-          clearTimeout(timer)
-          if (recognitionRef.current) {
-            recognitionRef.current.stop()
+          recognitionRef.current.onend = () => {
+            // Auto-restart if it was listening
+            if (isListeningRef.current) {
+              try {
+                recognitionRef.current.start()
+              } catch (error: any) {
+                console.error('Failed to restart recognition:', error)
+                if (error.name === 'NotAllowedError' || error.name === 'NotFoundError') {
+                  setIsListening(false)
+                  isListeningRef.current = false
+                }
+              }
+            }
           }
+        } catch (error) {
+          console.error('Failed to initialize speech recognition:', error)
+          setIsSupported(false)
         }
       }
     }
@@ -110,15 +106,55 @@ export default function VoiceInterface() {
     }
   }
 
-  const startListening = () => {
-    if (recognitionRef.current && !isListening) {
+  const startListening = async () => {
+    if (!isSupported) {
+      alert('Voice recognition is not supported in your browser. Please use Chrome, Edge, or Safari.')
+      return
+    }
+
+    if (!recognitionRef.current) {
+      alert('Voice recognition is not initialized. Please refresh the page.')
+      return
+    }
+
+    // Request microphone permission first
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // Stop the stream immediately after getting permission
+      stream.getTracks().forEach(track => track.stop())
+    } catch (error: any) {
+      if (error.name === 'NotAllowedError') {
+        alert('Microphone permission denied. Please allow microphone access in your browser settings and try again.')
+        return
+      } else if (error.name === 'NotFoundError') {
+        alert('No microphone found. Please connect a microphone and try again.')
+        return
+      } else {
+        console.error('Error accessing microphone:', error)
+        alert('Error accessing microphone. Please check your settings.')
+        return
+      }
+    }
+
+    // Start recognition
+    if (!isListening) {
       try {
+        setTranscript('')
         recognitionRef.current.start()
         setIsListening(true)
         isListeningRef.current = true
-        setTranscript('')
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to start recognition:', error)
+        
+        if (error.name === 'InvalidStateError') {
+          // Already started - ignore
+          if (!isListening) {
+            setIsListening(true)
+            isListeningRef.current = true
+          }
+        } else {
+          alert(`Failed to start voice recognition: ${error.message || 'Unknown error'}`)
+        }
       }
     }
   }
@@ -128,6 +164,7 @@ export default function VoiceInterface() {
       recognitionRef.current.stop()
       setIsListening(false)
       isListeningRef.current = false
+      setTranscript('')
     }
   }
 
@@ -135,7 +172,6 @@ export default function VoiceInterface() {
   const forceFixedPosition = () => {
     if (buttonRef.current) {
       const button = buttonRef.current
-      // Force fixed position via direct style manipulation with !important
       button.style.setProperty('position', 'fixed', 'important')
       button.style.setProperty('bottom', '24px', 'important')
       button.style.setProperty('left', '16px', 'important')
@@ -147,20 +183,16 @@ export default function VoiceInterface() {
     }
   }
 
-  // Force button to always stay fixed - prevent any position changes
+  // Force button to always stay fixed
   useEffect(() => {
-    // Force on mount and when state changes
     forceFixedPosition()
     
-    // Also force after short delays to catch any async changes
     const timeout1 = setTimeout(forceFixedPosition, 10)
     const timeout2 = setTimeout(forceFixedPosition, 100)
     const timeout3 = setTimeout(forceFixedPosition, 300)
     
-    // Use MutationObserver to watch for style/class changes on the button
     if (buttonRef.current) {
       const observer = new MutationObserver(() => {
-        // Debounce the force function
         setTimeout(forceFixedPosition, 0)
       })
       
@@ -231,10 +263,6 @@ export default function VoiceInterface() {
               <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
             </svg>
           )}
-          {/* <span className="text-sm font-medium whitespace-nowrap relative z-10">
-            {isListening ? 'Stop listening' : 'Start voice'}
-          </span> */}
-          {/* Pulse animation - 1.5s duration */}
           {!isListening && (
             <span 
               className="absolute inset-0 rounded-full bg-blue-600 pulse-voice opacity-75 group-hover:opacity-0"
@@ -279,7 +307,7 @@ export default function VoiceInterface() {
                 <p className="text-xs text-gray-600 mb-3 leading-relaxed">Say commands like "go to services" or "contact" to navigate</p>
                 {transcript && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
-                    <p className="text-xs font-medium text-blue-900 mb-1">Heard:</p>
+                    <p className="text-xs font-medium text-blue-900 mb-1">Command recognized:</p>
                     <p className="text-sm text-blue-700 font-medium italic">{transcript}</p>
                   </div>
                 )}
@@ -291,4 +319,3 @@ export default function VoiceInterface() {
     </>
   )
 }
-
