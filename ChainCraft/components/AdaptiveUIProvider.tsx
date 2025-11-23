@@ -162,9 +162,13 @@ export function AdaptiveUIProvider({ children }: { children: React.ReactNode }) 
   }, [])
 
   // Track interaction speed
+  // Use a ref to track last interaction time without causing re-renders
+  const lastInteractionRef = useRef(Date.now())
+
   const trackInteraction = useCallback((feature: string) => {
     const now = Date.now()
-    const timeSinceLastInteraction = now - behavior.lastInteraction
+    const timeSinceLastInteraction = now - lastInteractionRef.current
+    lastInteractionRef.current = now
 
     setBehavior(prev => {
       const newBehavior = {
@@ -190,7 +194,7 @@ export function AdaptiveUIProvider({ children }: { children: React.ReactNode }) 
 
       return newBehavior
     })
-  }, [behavior.lastInteraction])
+  }, []) // Empty dependency array - function is stable and uses ref for lastInteraction
 
   // Update behavior
   const updateBehavior = useCallback((type: keyof UserBehavior, value: any) => {

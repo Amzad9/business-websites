@@ -12,7 +12,7 @@ export default function AdaptivePageWrapper({ children, pageType }: AdaptivePage
   const { colorMode, timeOfDay, trackInteraction, animationSpeed } = useAdaptiveUI()
 
   useEffect(() => {
-    // Track page visit
+    // Track page visit - only when pageType changes
     trackInteraction(`page-${pageType}`)
     
     // Apply page-specific adaptive classes
@@ -28,7 +28,8 @@ export default function AdaptivePageWrapper({ children, pageType }: AdaptivePage
       root.removeAttribute('data-color-mode')
       root.style.removeProperty('--animation-speed')
     }
-  }, [pageType, timeOfDay, colorMode, animationSpeed, trackInteraction])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageType]) // Only depend on pageType - other values can update without re-running this effect
 
   return <>{children}</>
 }
