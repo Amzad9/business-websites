@@ -3,6 +3,7 @@ import Link from 'next/link'
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { normalizeFrontmatterDate } from './utils'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -26,20 +27,22 @@ function getBlogPosts(): BlogPost[] {
   const files = fs.readdirSync(blogDirectory)
   const posts = files
     .filter((file) => file.endsWith('.md'))
-    .map((file) => {
+      .map((file) => {
       const filePath = path.join(blogDirectory, file)
       const fileContents = fs.readFileSync(filePath, 'utf8')
       const { data } = matter(fileContents)
-      // Ensure date is always a string for rendering
-      const dateValue = data.date instanceof Date 
-        ? data.date.toISOString().split('T')[0] 
-        : String(data.date || '')
+        const rawFrontmatter = data as Partial<BlogPost['frontmatter']> & {
+          date?: string | Date
+        }
+        // Ensure date is always a string for rendering
+        const dateValue = normalizeFrontmatterDate(rawFrontmatter.date)
       return {
         slug: file.replace('.md', ''),
         frontmatter: {
-          ...data,
+            title: rawFrontmatter.title ?? '',
+            excerpt: rawFrontmatter.excerpt ?? '',
           date: dateValue,
-        } as BlogPost['frontmatter'],
+          } as BlogPost['frontmatter'],
       }
     })
   return posts.sort((a, b) => 
@@ -98,9 +101,7 @@ export default function Blog() {
                     <article className="group relative bg-white rounded-2xl shadow-xl hover:shadow-2xl border-2 border-gray-200 hover:border-primary-500 transition-all duration-500 hover:-translate-y-2 overflow-hidden">
                       <div className="p-8">
                         <div className="text-sm font-bold text-primary-600 mb-3 uppercase tracking-wider">
-                          {post.frontmatter.date instanceof Date 
-                            ? post.frontmatter.date.toLocaleDateString() 
-                            : String(post.frontmatter.date || '')}
+                          {post.frontmatter.date}
                         </div>
                         <h2 className="text-2xl font-black mb-4 text-white group-hover:text-primary-700 transition-colors">{post.frontmatter.title}</h2>
                         <p className="text-black/80 leading-relaxed font-semibold">{post.frontmatter.excerpt}</p>

@@ -6,6 +6,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { remark } from 'remark'
 import html from 'remark-html'
+import { normalizeFrontmatterDate } from '../utils'
 
 interface PageProps {
   params: {
@@ -13,7 +14,23 @@ interface PageProps {
   }
 }
 
-function getBlogPost(slug: string) {
+interface BlogFrontmatter {
+  title: string
+  excerpt: string
+  date: string | Date
+}
+
+type NormalizedFrontmatter = Omit<BlogFrontmatter, 'date'> & {
+  date: string
+}
+
+interface BlogPost {
+  slug: string
+  frontmatter: NormalizedFrontmatter
+  content: string
+}
+
+function getBlogPost(slug: string): BlogPost | null {
   const blogDirectory = path.join(process.cwd(), 'content/blog')
   const filePath = path.join(blogDirectory, `${slug}.md`)
   
@@ -22,14 +39,14 @@ function getBlogPost(slug: string) {
   }
 
   const fileContents = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(fileContents)
+  const parsed = matter(fileContents)
+  const data = parsed.data as BlogFrontmatter
+  const content = parsed.content
   const processedContent = remark().use(html).processSync(content)
   const contentHtml = processedContent.toString()
 
   // Ensure date is always a string for rendering
-  const dateValue = data.date instanceof Date 
-    ? data.date.toISOString().split('T')[0] 
-    : String(data.date || '')
+  const dateValue = normalizeFrontmatterDate(data.date)
 
   return {
     slug,
@@ -50,8 +67,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: post.frontmatter.title as string,
-    description: post.frontmatter.excerpt as string,
+    title: post.frontmatter.title,
+    description: post.frontmatter.excerpt,
   }
 }
 
@@ -86,13 +103,11 @@ export default function BlogPost({ params }: PageProps) {
             </Link>
           </div>
           <div>
-            <h1 className="text-4xl md:text-6xl font-black mb-6 text-white">{post.frontmatter.title as string}</h1>
+            <h1 className="text-4xl md:text-6xl font-black mb-6 text-white">{post.frontmatter.title}</h1>
           </div>
           <div>
             <p className="text-white font-semibold mb-8">
-              {post.frontmatter.date instanceof Date 
-                ? post.frontmatter.date.toLocaleDateString() 
-                : String(post.frontmatter.date || '')}
+              {post.frontmatter.date}
             </p>
           </div>
         </div>

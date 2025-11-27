@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://boldbite.com
+
+# Sitemaps
+Sitemap: https://boldbite.com/sitemap.xml
