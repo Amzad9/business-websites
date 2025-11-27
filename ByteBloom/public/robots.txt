@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://bytebloom.com
+
+# Sitemaps
+Sitemap: https://bytebloom.com/sitemap.xml

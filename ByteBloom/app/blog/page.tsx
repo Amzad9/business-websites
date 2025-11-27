@@ -95,9 +95,10 @@ export default function Blog() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post, index) => {
-                const dateStr = post.frontmatter.date instanceof Date 
-                  ? post.frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                  : String(post.frontmatter.date || '')
+                const parsedDate = new Date(post.frontmatter.date)
+                const dateStr = Number.isNaN(parsedDate.getTime())
+                  ? String(post.frontmatter.date || '')
+                  : parsedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                 
                 return (
                   <Link 

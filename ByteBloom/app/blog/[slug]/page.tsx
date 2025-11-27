@@ -12,7 +12,19 @@ interface PageProps {
   }
 }
 
-function getBlogPost(slug: string) {
+interface BlogFrontmatter {
+  title: string
+  date: string
+  excerpt: string
+}
+
+interface BlogPost {
+  slug: string
+  frontmatter: BlogFrontmatter
+  content: string
+}
+
+function getBlogPost(slug: string): BlogPost | null {
   const blogDirectory = path.join(process.cwd(), 'content/blog')
   const filePath = path.join(blogDirectory, `${slug}.md`)
   
@@ -30,12 +42,15 @@ function getBlogPost(slug: string) {
     ? data.date.toISOString().split('T')[0] 
     : String(data.date || '')
 
+  const frontmatter: BlogFrontmatter = {
+    title: typeof data.title === 'string' ? data.title : '',
+    excerpt: typeof data.excerpt === 'string' ? data.excerpt : '',
+    date: dateValue,
+  }
+
   return {
     slug,
-    frontmatter: {
-      ...data,
-      date: dateValue,
-    },
+    frontmatter,
     content: contentHtml,
   }
 }
@@ -49,8 +64,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: post.frontmatter.title as string,
-    description: post.frontmatter.excerpt as string,
+    title: post.frontmatter.title,
+    description: post.frontmatter.excerpt,
   }
 }
 
@@ -66,10 +81,10 @@ export default function BlogPost({ params }: PageProps) {
       <article className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <div>
-            <h1 className="text-5xl font-bold mb-6">{post.frontmatter.title as string}</h1>
+            <h1 className="text-5xl font-bold mb-6">{post.frontmatter.title}</h1>
           </div>
           <div>
-            <p className="text-gray-500 mb-8">{post.frontmatter.date as string}</p>
+            <p className="text-gray-500 mb-8">{post.frontmatter.date}</p>
           </div>
           <div>
             <div
